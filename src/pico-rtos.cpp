@@ -19,14 +19,36 @@ void led_task(void *pvParameters) {
 
     while (true) {
         gpio_put(PICO_DEFAULT_LED_PIN, 1);
-        printf("LED ON\n");
-        vTaskDelay(pdMS_TO_TICKS(800)); // Delay for 100 ms
+        vTaskDelay(pdMS_TO_TICKS(100));
 
         gpio_put(PICO_DEFAULT_LED_PIN, 0);
-        printf("LED OFF\n");
-        vTaskDelay(pdMS_TO_TICKS(800)); // Delay for 100 ms
+        vTaskDelay(pdMS_TO_TICKS(800));
     }
 }
+
+
+void serial_task(void *pvParameters) {
+    TickType_t xLastWakeTime;
+    const TickType_t xFrequency = pdMS_TO_TICKS(100); // Frequency of 100 ms
+
+    xLastWakeTime = xTaskGetTickCount();
+
+    while (true) {
+        // Get the current tick count
+        TickType_t currentTick = xTaskGetTickCount();
+
+        // Convert ticks to milliseconds
+        uint32_t timeInMs = currentTick * portTICK_PERIOD_MS;
+        uint32_t seconds = timeInMs / 1000;
+        uint32_t milliseconds = timeInMs % 1000;
+
+        // Print the current time in seconds and milliseconds
+        printf("Time: %lu.%03lu seconds - Serial Test\n", seconds, milliseconds);
+
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
+    }
+}
+
 
 void setup() {
     // Add any setup code here, if needed
@@ -39,6 +61,11 @@ int main() {
 
     // Create LED task
     if (xTaskCreate(led_task, "led_task", 256, NULL, 1, NULL) != pdPASS) {
+        printf("Failed to create LED task\n");
+        while (1); // Halt if task creation failed
+    }
+
+    if (xTaskCreate(serial_task, "serial_task", 256, NULL, 2, NULL) != pdPASS) {
         printf("Failed to create LED task\n");
         while (1); // Halt if task creation failed
     }
