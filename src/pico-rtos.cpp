@@ -20,11 +20,11 @@ void led_task(void *pvParameters) {
     while (true) {
         gpio_put(PICO_DEFAULT_LED_PIN, 1);
         printf("LED ON\n");
-        vTaskDelay(pdMS_TO_TICKS(1000)); // Delay for 100 ms
+        vTaskDelay(pdMS_TO_TICKS(800)); // Delay for 100 ms
 
         gpio_put(PICO_DEFAULT_LED_PIN, 0);
         printf("LED OFF\n");
-        vTaskDelay(pdMS_TO_TICKS(1000)); // Delay for 100 ms
+        vTaskDelay(pdMS_TO_TICKS(800)); // Delay for 100 ms
     }
 }
 
