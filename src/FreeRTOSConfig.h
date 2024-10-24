@@ -40,6 +40,14 @@
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
 
+/* Add RP2350 specific config */
+#define configENABLE_MPU                        0
+#define configENABLE_TRUSTZONE                  0
+#define configRUN_FREERTOS_SECURE_ONLY          1
+#define configENABLE_FPU                        1
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY    16
+
+
 /* Scheduler Related */
 #define configUSE_PREEMPTION                    1
 #define configUSE_TICKLESS_IDLE                 0
@@ -50,7 +58,6 @@
 #define configMAX_PRIORITIES                    32
 #define configMINIMAL_STACK_SIZE                ( configSTACK_DEPTH_TYPE ) 256
 #define configUSE_16_BIT_TICKS                  0
-
 #define configIDLE_SHOULD_YIELD                 1
 
 /* Synchronization Related */
